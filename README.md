@@ -13,8 +13,12 @@ of the examples:
 $ rustup target add thumbv8m.main-none-eabihf
 $ git clone https://github.com/nrf-rs/nrf9160-dk.git
 $ cd nrf9160-dk
-$ cargo build --target=thumbv8m.main-none-eabihf --example blinky
+$ cargo objcopy --target=thumbv8m.main-none-eabihf --example blinky -- -O ihex target/thumbv8m.main-none-eabihf/debug/examples/blinky.hex
 ```
+
+Note that the nRF9160 has trusted execution and so you will need to compliment the above example and your own applications with a 
+[Secure Partition Manager](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/spm/README.html#secure-partition-manager).
+Nordic provide a sample one at https://github.com/nrfconnect/sdk-nrf/tree/master/samples/spm.
 
 To use in your own application, add as a dependency and call the
 `Board::take()` function.
