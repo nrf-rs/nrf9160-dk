@@ -6,26 +6,66 @@ the onboard features.
 
 ## Usage
 
-You will require the `thumbv8m.main-none-eabihf` target installed. To build one
-of the examples:
+You will require the `thumbv8m.main-none-eabihf` target installed.
 
 ```console
 $ rustup target add thumbv8m.main-none-eabihf
+```
+
+To use this BSP in your own application, add as a dependency and call the
+`Board::take()` function.
+
+To build one of the examples run:
+
+```console
 $ git clone https://github.com/nrf-rs/nrf9160-dk.git
 $ cd nrf9160-dk
 $ cargo objcopy --target=thumbv8m.main-none-eabihf --example blinky -- -O ihex target/thumbv8m.main-none-eabihf/debug/examples/blinky.hex
 ```
 
-Note that the nRF9160 has trusted execution and so you will need to compliment the above example and your own applications with a 
-[Secure Partition Manager](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/spm/README.html#secure-partition-manager).
-Nordic provide a sample one at https://github.com/nrfconnect/sdk-nrf/tree/master/samples/spm.
+If you don't have `cargo-objcopy` installed, run:
 
-To use in your own application, add as a dependency and call the
-`Board::take()` function.
+```console
+$ rustup component add llvm-tools-preview
+$ cargo install cargo-binutils
+```
 
-## Minimum Supported Rust Version
+Or you can just run objcopy manually:
 
-This crate is guaranteed to build on stable Rust 1.41 and higher.
+```console
+$ sudo apt install binutils # provides /usr/bin/objcopy on Ubuntu
+$ cargo build --target=thumbv8m.main-none-eabihf --example blinky
+$ objcopy -O ihex target/thumbv8m.main-none-eabihf/debug/examples/blinky target/thumbv8m.main-none-eabihf/debug/examples/blinky.hex
+```
+
+Either way you can then flash the `blinky.hex` file using SEGGER JFlashLite, or
+your favourite flashing tool.
+
+## Secure vs Non-Secure
+
+This BSP is designed to run in non-secure mode, as should most of your
+application code. You will therefore need a 'bootloader' which starts in secure
+mode, moves the required peripherals into 'non-secure' world, and then jumps to
+your application.
+
+We have succesfully used Nordic's [Secure Partition
+Manager](https://github.com/nrfconnect/sdk-nrf/tree/master/samples/spm) from nRF
+SDK v1.5.1. SPM v1.5.1 is configured to expect your application at address
+`0x0005_0000` and so that is what `memory.x` must specify as the start of Flash.
+Note that other version of SPM might specify a different start address!
+
+```console
+$ west init -m https://github.com/nrfconnect/sdk-nrf --mr v1.5.1 ncs
+$ cd ncs
+$ west update # This takes *ages*
+$ cd nrf/examples/spm
+$ west build --board=nrf9160dk_nrf9160
+$ west flash
+```
+
+Your nRF9160-DK will now have SPM installed between `0x0000_0000` and
+`0x0004_FFFF`. Flashing your application at `0x0005_0000` should not affect SPM,
+provided you do not select *erase entire chip* or somesuch!
 
 ## Licence
 
