@@ -1,6 +1,9 @@
-on: push
-
 name: Continuous integration
+
+on:
+  push:
+    branches: [ master, staging, trying ]
+  pull_request:
 
 jobs:
   ci:
@@ -11,7 +14,6 @@ jobs:
           - stable
           - beta
           - nightly
-          - 1.41.0  # MSRV
 
     steps:
       - uses: actions/checkout@v2
