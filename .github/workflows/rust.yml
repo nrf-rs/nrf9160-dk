@@ -1,6 +1,9 @@
-on: push
-
 name: Continuous integration
+
+on:
+  push:
+    branches: [ master, staging, trying ]
+  pull_request:
 
 jobs:
   ci:
