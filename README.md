@@ -6,14 +6,19 @@ the onboard features.
 
 ## Usage
 
-You will require the `thumbv8m.main-none-eabihf` target installed.
+You will require Rust 1.51 or higher, and the `thumbv8m.main-none-eabihf` target
+installed.
 
 ```console
+$ rustc --version
+rustc 1.52.1 (9bc8c42bb 2021-05-09)
 $ rustup target add thumbv8m.main-none-eabihf
 ```
 
 To use this BSP in your own application, add as a dependency and call the
 `Board::take()` function.
+
+## Examples
 
 To build one of the examples run:
 
@@ -43,10 +48,13 @@ your favourite flashing tool.
 
 ## Debugging
 
-The nRF9160-DK has an on-board SEGGER JLink debug probe. You need to run the SEGGER JLink-to-GDB server software, and you can then debug the board using any GDB interface.
+The nRF9160-DK has an on-board SEGGER JLink debug probe. You need to run the
+SEGGER JLink-to-GDB server software, and you can then debug the board using any
+GDB interface.
 
 ```console
-$ /opt/SEGGER/JLink/JLinkGDBServer &
+$ /opt/SEGGER/JLink/JLinkGDBServerExe &
+$ # A GUI will pop up. Select the nRF9160 device.
 $ cargo build --target=thumbv8m.main-none-eabihf --example blinky
 $ gdb-multiarch ./target/thumbv8m.main-none-eabihf/debug/examples/blinky
 GNU gdb (Ubuntu 9.2-0ubuntu1~20.04) 9.2
@@ -90,7 +98,9 @@ Breakpoint 1, main () at examples/blinky.rs:24
 (gdb) 
 ```
 
-You can also follow [this guide on useing SEGGER J-Link with Visual Studio Code](https://wiki.segger.com/J-Link_Visual_Studio_Code). The `"device"` parameter should be set to `"nrf9160"`.
+You can also follow [this guide on using SEGGER J-Link with Visual Studio
+Code](https://wiki.segger.com/J-Link_Visual_Studio_Code). The `"device"`
+parameter should be set to `"nrf9160"`.
 
 ## Secure vs Non-Secure
 
