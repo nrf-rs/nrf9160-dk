@@ -19,10 +19,6 @@ $ cargo build --target=thumbv8m.main-none-eabihf --example blinky
 To use in your own application, add as a dependency and call the
 `Board::take()` function.
 
-## Minimum Supported Rust Version
-
-This crate is guaranteed to build on stable Rust 1.41 and higher.
-
 ## Licence
 
 Licensed under either of
