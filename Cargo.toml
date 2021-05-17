@@ -12,7 +12,7 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-nrf9160-hal = "0.12.1"
+nrf9160-hal = { git = "https://github.com/nrf-rs/nrf-hal" }
 
 [dev-dependencies]
 cortex-m-rt = "0.6"
