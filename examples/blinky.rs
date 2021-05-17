@@ -31,8 +31,10 @@ fn main() -> ! {
     let mut led_is_on = false;
     loop {
         if led_is_on {
+            writeln!(board.cdc_uart, "Off").unwrap();
             board.leds.led_1.disable();
         } else {
+            writeln!(board.cdc_uart, "On").unwrap();
             board.leds.led_1.enable();
         }
         timer.start(1_000_000_u32);
