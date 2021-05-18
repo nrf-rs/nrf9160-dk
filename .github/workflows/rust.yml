@@ -16,9 +16,11 @@ jobs:
           - nightly
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-      - uses: actions-rs/toolchain@v1
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: ${{ matrix.rust }}
@@ -26,22 +28,26 @@ jobs:
           components: rustfmt, clippy
           target: thumbv8m.main-none-eabihf
 
-      - uses: actions-rs/cargo@v1
+      - name: Cargo Build
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --target=thumbv8m.main-none-eabihf
 
-      - uses: actions-rs/cargo@v1
+      - name: Cargo Build Examples
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --examples --target=thumbv8m.main-none-eabihf
 
-      - uses: actions-rs/cargo@v1
+      - name: Check formatting
+        uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
 
-      - uses: actions-rs/clippy-check@v1
+      - name: Clippy
+        uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-features
