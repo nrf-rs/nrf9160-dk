@@ -19,6 +19,6 @@ nrf9160-hal = { git = "https://github.com/nrf-rs/nrf-hal" }
 cortex-m-rt = "0.6"
 cortex-m = "0.7"
 nb = "0.1.2"
-nrfxlib = { git = "https://github.com/42-technology-ltd/nrfxlib.git", branch="support_151" }
+nrfxlib = "0.6.0"
 tinyrlibc = "*"
 spin = "0.9"
